@@ -1,0 +1,3 @@
+com\xmg\mgrsite\base\IplogController.class
+com\xmg\mgrsite\listener\InitAdminListener.class
+com\xmg\mgrsite\base\LoginController.class

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.BidMapper">
+
+	<resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.Bid">
+
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="actualRate" property="actualRate" jdbcType="DECIMAL" />
+		<result column="availableAmount" property="availablemount"
+			jdbcType="DECIMAL" />
+		<result column="bidrequest_id" property="bidrequestId"
+			jdbcType="BIGINT" />
+		<result column="bidTime" property="bidTime" jdbcType="TIMESTAMP" />
+		<result column="bidRequestTitle" property="bidRequestTitle"
+			jdbcType="VARCHAR" />
+
+		<association property="bidUser" javaType="com.xmg.p2p.base.domain.Logininfo"
+			columnPrefix="l_">
+			<!-- 1、关联的pojo对象Logininfo的唯一标识 column为表中的列名，property对应的是属性名称 -->
+			<id column="id" property="id" />
+			<!-- 2、result中的参数就是你关联的pojo对象的你所需的信息，我现在只想知道关联用户的名称 -->
+			<result column="username" property="username" />
+		</association>
+
+	</resultMap>
+
+
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into `bid` (actualRate, availableAmount, bidrequest_id,
+		bidUser_id, bidTime, bidRequestTitle
+		)
+		values (#{actualRate,jdbcType=DECIMAL}, #{availableAmount,jdbcType=DECIMAL},
+		#{bidrequestId,jdbcType=BIGINT},
+		#{biduser.id,jdbcType=BIGINT}, #{bidTime,jdbcType=TIMESTAMP}, #{bidRequestTitle,jdbcType=VARCHAR}
+		)
+	</insert>
+
+    
+    <sql id="base_column">
+        b.id, b.actualRate, b.availableAmount, b.bidrequest_id, b.bidTime, b.bidRequestTitle,
+        l.id as l_id, l.username as l_uasername
+    </sql>
+
+
+	<!-- 使用内连接的方式 INNER JOIN -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		SELECT   include<include refid="base_column"/>
+		FROM `bid` b 
+		INNER JOIN logininfo l
+		ON b.bidUser_id = l.id
+		WHERE b.id = #{id}
+	</select>
+
+    <!-- 关联查询投标人 bidrequest的对应bid的投标信息 -->
+    <select id="selcetByBidRequest" resultMap="BaseResultMap" >
+        SELECT include<include refid="base_column"/> 
+        FROM bid b 
+        INNER JOIN logininfo l
+        ON b.bidUser_id = lid
+        <!-- 这里的bidrequest_id怎么不使用b.bidrequest_id -->
+        WHERE bidrequest_id = #{bidRequestId}
+    </select>
+
+
+</mapper>

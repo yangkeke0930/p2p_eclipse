@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.business.mapper.BidRequestAuditHistoryMapper" >
+
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.business.domain.BidRequestAuditHistory" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="auditTime" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="applyTime" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="bidRequestId" property="bidrequestId" jdbcType="BIGINT" />
+    <result column="auditType" property="auditType" jdbcType="TINYINT" />
+    
+    <!-- 申请人 -->
+    <association property="applier" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="ap_">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+    </association>
+    
+    <!-- 审核人 -->
+    <association property="auditor" javaType="com.xmg.p2p.base.domain.Logininfo" columnPrefix="au_">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+    </association>
+  </resultMap>
+  
+  <sql id="base_sql">
+    h.id, h.state, h.remark, h.auditTime, h.applyTime, h.bidRequestId, h.auditType,
+    au.id as au_id, au.username as au_username,
+    ap.id as ap_id, ap.username as au_username
+  </sql>
+  
+  <!-- 插入数据 -->
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+    insert into `bidrequestaudithistory` (state, remark, auditTime, applyTime, auditor_id, applier_id, bidRequestId, auditType)
+    values (#{state,jdbcType=TINYINT}, #{remark,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, 
+            #{applyTime,jdbcType=TIMESTAMP}, #{auditor.id,jdbcType=BIGINT}, #{applier.id,jdbcType=BIGINT}, 
+            #{bidrequestId,jdbcType=BIGINT}, #{auditType,jdbcType=TINYINT})
+  </insert>
+ 
+  <!-- 根据id查询数据 --> 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+    select <include refid="base_sql"/>
+    from `bidrequestaudithistory` h 
+    INNER JOIN logininfo ap
+    ON h.applier_id = ap.id
+    INNER JOIN logininfo au
+    ON h.auditor_id = au.id
+    where h.id = #{id,jdbcType=BIGINT}
+  </select>
+  
+ 
+</mapper>

@@ -1,0 +1,9 @@
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=f9bdbdc0-e5ef-416a-ad1a-8be46c53bea HTTP/1.1" 200 2937 http-bio-8080-exec-4 186
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=f3bdc675-e27f-46d7-a664-6e3d6d8d862 HTTP/1.1" 200 2937 http-bio-8080-exec-1 182
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=733efd69-f922-4888-9be4-bd815d533a3 HTTP/1.1" 200 2937 http-bio-8080-exec-1 7
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=a16dc467-6370-4547-a320-a25b31935ba HTTP/1.1" 200 2937 http-bio-8080-exec-4 11
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=3bf37f82-001f-4af6-ad0a-2ac8f48fe435 HTTP/1.1" 200 2937 http-bio-8080-exec-1 17
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=50e33d40-0f78-4c7a-a25f-1b55b35ceef HTTP/1.1" 200 2937 http-bio-8080-exec-4 27
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /bindEmail.do?key=3bf37f82-001f-4af6-ad0a-2ac8f48fe43 HTTP/1.1" 200 2937 http-bio-8080-exec-1 7
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /personal.do HTTP/1.1" 302 - http-bio-8080-exec-4 4
+0:0:0:0:0:0:0:1 - - [31/Aug/2020:12:33:43 +0800] "GET /login.html HTTP/1.1" 200 4603 http-bio-8080-exec-1 6

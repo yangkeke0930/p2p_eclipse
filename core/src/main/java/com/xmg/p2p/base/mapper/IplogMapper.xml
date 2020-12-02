@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.p2p.base.mapper.IplogMapper" >
+  <resultMap id="BaseResultMap" type="com.xmg.p2p.base.domain.Iplog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="loginTime" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="userType" property="userType" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from `iplog`
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.xmg.p2p.base.domain.Iplog" useGeneratedKeys="true" keyProperty="id" >
+    insert into `iplog` (ip, state, userName, 
+      loginTime, userType)
+    values (#{ip,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{userName,jdbcType=VARCHAR}, 
+      #{loginTime,jdbcType=TIMESTAMP}, #{userType})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="com.xmg.p2p.base.domain.Iplog" >
+    update `iplog`
+    set ip = #{ip,jdbcType=VARCHAR},
+      state = #{state,jdbcType=TINYINT},
+      userName = #{userName,jdbcType=VARCHAR},
+      loginTime = #{loginTime,jdbcType=TIMESTAMP},
+      userType = #{userType}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <sql id="base_column">
+    id, ip, state, userName, loginTime,userType
+  </sql>
+  
+  <sql id="base_where">
+    <where>
+        <if test="beginDate != null">
+            and loginTime &gt;= #{beginDate}
+        </if>
+        <if test="endDate != null">
+            and loginTime &lt;= #{endDate}
+        </if>
+        <if test="userType > -1">
+            and userType = #{userType}
+        </if>
+        <if test="state > -1">
+            and state = #{state}
+        </if>
+        <if test="username != null">
+            and username = #{username}
+        </if>
+    </where>
+  </sql>
+  
+<!--   查询的总记录数          -->
+<select id="queryForCount" resultType="int">
+    select count(id)
+    from iplog
+    <include refid="base_where"/>
+</select>
+  
+<!--  查询单个页面上面的记录详情      -->
+<select id="query" resultMap="BaseResultMap">
+    select <include refid="base_column"/>
+    from iplog
+    <include refid="base_where"/>
+    order by loginTime DESC
+    limit #{start},#{pageSize}
+</select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select <include refid="base_column"/>
+    from `iplog`
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select <include refid="base_column"/>
+    from `iplog`
+  </select>
+  
+</mapper>
